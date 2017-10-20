@@ -10,7 +10,7 @@
   <email>chuck@horde.org</email>
   <active>yes</active>
  </lead>
- <date>2017-10-17</date>
+ <date>2017-10-20</date>
  <version>
   <release>2.3.7</release>
   <api>2.3.0</api>
@@ -73,7 +73,6 @@
       <file name="AllTests.php" role="test" />
       <file name="bootstrap.php" role="test" />
       <file name="conf.php.dist" role="test" />
-      <file name="phpunit.xml" role="test" />
       <file name="TestBase.php" role="test" />
      </dir> <!-- /test/Horde/History -->
     </dir> <!-- /test/Horde -->
@@ -152,7 +151,6 @@
    <install as="Horde/History/conf.php.dist" name="test/Horde/History/conf.php.dist" />
    <install as="Horde/History/Mock/MockTest.php" name="test/Horde/History/Mock/MockTest.php" />
    <install as="Horde/History/Mongo/MongoTest.php" name="test/Horde/History/Mongo/MongoTest.php" />
-   <install as="Horde/History/phpunit.xml" name="test/Horde/History/phpunit.xml" />
    <install as="Horde/History/Sql/Base.php" name="test/Horde/History/Sql/Base.php" />
    <install as="Horde/History/Sql/MysqliTest.php" name="test/Horde/History/Sql/MysqliTest.php" />
    <install as="Horde/History/Sql/MysqlTest.php" name="test/Horde/History/Sql/MysqlTest.php" />
@@ -568,7 +566,7 @@ Converted to package.xml 2.0 for pear.horde.org
    <stability>
     <release>stable</release>
     <api>stable</api></stability>
-   <date>2017-10-17</date>
+   <date>2017-10-20</date>
    <license uri="http://www.horde.org/licenses/lgpl21">LGPL-2.1</license>
    <notes>
 * 
