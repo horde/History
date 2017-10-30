@@ -10,7 +10,7 @@
   <email>chuck@horde.org</email>
   <active>yes</active>
  </lead>
- <date>2016-02-01</date>
+ <date>2017-10-30</date>
  <version>
   <release>2.3.7</release>
   <api>2.3.0</api>
@@ -28,6 +28,7 @@
    <dir name="doc">
     <dir name="Horde">
      <dir name="History">
+      <file name="CHANGES" role="doc" />
       <file name="COPYING" role="doc" />
      </dir> <!-- /doc/Horde/History -->
     </dir> <!-- /doc/Horde -->
@@ -138,6 +139,7 @@
  </dependencies>
  <phprelease>
   <filelist>
+   <install as="CHANGES" name="doc/Horde/History/CHANGES" />
    <install as="COPYING" name="doc/Horde/History/COPYING" />
    <install as="Horde/History.php" name="lib/Horde/History.php" />
    <install as="Horde/History/Composite.php" name="lib/Horde/History/Composite.php" />
@@ -574,7 +576,7 @@
    <stability>
     <release>stable</release>
     <api>stable</api></stability>
-   <date>2016-02-01</date>
+   <date>2017-10-30</date>
    <license uri="http://www.horde.org/licenses/lgpl21">LGPL-2.1</license>
    <notes>
 * 
