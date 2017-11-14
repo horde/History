@@ -81,7 +81,6 @@
       <file name="AllTests.php" role="test" />
       <file name="bootstrap.php" role="test" />
       <file name="conf.php.dist" role="test" />
-      <file name="phpunit.xml" role="test" />
       <file name="TestBase.php" role="test" />
      </dir> <!-- /test/Horde/History -->
     </dir> <!-- /test/Horde -->
@@ -158,7 +157,6 @@
    <install as="Horde/History/AllTests.php" name="test/Horde/History/AllTests.php" />
    <install as="Horde/History/bootstrap.php" name="test/Horde/History/bootstrap.php" />
    <install as="Horde/History/conf.php.dist" name="test/Horde/History/conf.php.dist" />
-   <install as="Horde/History/phpunit.xml" name="test/Horde/History/phpunit.xml" />
    <install as="Horde/History/TestBase.php" name="test/Horde/History/TestBase.php" />
    <install as="Horde/History/Mock/MockTest.php" name="test/Horde/History/Mock/MockTest.php" />
    <install as="Horde/History/Mongo/MongoTest.php" name="test/Horde/History/Mongo/MongoTest.php" />
