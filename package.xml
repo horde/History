@@ -3,21 +3,21 @@
  <name>Horde_History</name>
  <channel>pear.horde.org</channel>
  <summary>History tracking library</summary>
- <description>The Horde_History API provides a way to track changes on arbitrary pieces of data in Horde applications.</description>
+ <description>A library that provides a way to track changes on arbitrary pieces of data in Horde applications.</description>
  <lead>
   <name>Chuck Hagenbuch</name>
   <user>chuck</user>
   <email>chuck@horde.org</email>
-  <active>yes</active>
+  <active>no</active>
  </lead>
- <date>2017-11-11</date>
+ <date>2021-02-24</date>
  <version>
-  <release>2.3.7</release>
-  <api>2.3.0</api>
+  <release>3.0.0alpha1</release>
+  <api>3.0.0alpha1</api>
  </version>
  <stability>
-  <release>stable</release>
-  <api>stable</api>
+  <release>alpha</release>
+  <api>alpha</api>
  </stability>
  <license uri="http://www.horde.org/licenses/lgpl21">LGPL-2.1</license>
  <notes>
@@ -569,12 +569,12 @@
   </release>
   <release>
    <version>
-    <release>2.3.7</release>
-    <api>2.3.0</api></version>
+    <release>3.0.0alpha1</release>
+    <api>3.0.0alpha1</api></version>
    <stability>
-    <release>stable</release>
-    <api>stable</api></stability>
-   <date>2017-11-11</date>
+    <release>alpha</release>
+    <api>alpha</api></stability>
+   <date>2021-02-24</date>
    <license uri="http://www.horde.org/licenses/lgpl21">LGPL-2.1</license>
    <notes>
 * 
