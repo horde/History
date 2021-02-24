@@ -33,9 +33,6 @@
     "autoload": {
         "psr-0": {
             "Horde_History": "lib/"
-        },
-        "psr-4": {
-            "Horde\\History\\": "src/"
         }
     }
 }
