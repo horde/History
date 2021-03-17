@@ -9,9 +9,12 @@
  * @subpackage UnitTests
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
  */
-class Horde_History_Sql_MysqliTest extends Horde_History_Sql_Base
+namespace Horde\History\Sql;
+use Horde_History_Sql_Base as Base;
+
+class MysqliTest extends Base
 {
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         if (!extension_loaded('mysqli')) {
             self::$reason = 'No mysqli extension';
