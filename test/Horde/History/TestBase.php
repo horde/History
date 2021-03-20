@@ -1,4 +1,8 @@
 <?php
+namespace Horde\History;
+use \Horde_Test_Case;
+use InvalidArgumentException;
+
 /**
  * Copyright 2010-2017 Horde LLC (http://www.horde.org/)
  *
@@ -8,7 +12,7 @@
  * @subpackage UnitTests
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
  */
-class Horde_History_TestBase extends Horde_Test_Case
+class TestBase extends Horde_Test_Case
 {
     protected static $history;
 

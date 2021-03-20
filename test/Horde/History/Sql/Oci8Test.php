@@ -9,9 +9,9 @@
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
  */
 namespace Horde\History\Sql;
-use Horde_History_Sql_Base as Base;
+use \Horde_Db_Adapter_Oci8;
 
-class Oci8Test extends Base
+class Oci8Test extends BaseTestCase
 {
     public static function setUpBeforeClass(): void
     {

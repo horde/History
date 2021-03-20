@@ -10,7 +10,8 @@
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
  */
 namespace Horde\History\Sql\Pdo;
-use Horde_History_Sql_Base as Base;
+use \Horde\History\Sql\BaseTestCase as Base;
+use \Horde_Db_Adapter_Pdo_Pgsql;
 use \PDO;
 
 class PgsqlTest extends Base

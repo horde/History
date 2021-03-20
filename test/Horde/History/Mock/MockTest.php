@@ -9,7 +9,7 @@
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
  */
 namespace Horde\History\Mock;
-use Horde_History_TestBase as TestBase;
+use Horde\History\TestBase as TestBase;
 use \Horde_History_Mock;
 use \Horde_Cache;
 use \Horde_Cache_Storage_Mock;
