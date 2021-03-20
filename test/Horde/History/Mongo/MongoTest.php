@@ -9,7 +9,9 @@
  * @subpackage UnitTests
  */
 namespace Horde\History\Mongo;
-use Horde_History_TestBase as TestBase;
+use \Horde\History\TestBase as TestBase;
+use \Horde_History_Mongo;
+use \Horde_Test_Factory_Mongo;
 
 /**
  * MongoDB History tests.

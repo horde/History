@@ -6,8 +6,15 @@
  * @package    History
  * @subpackage UnitTests
  */
+namespace Horde\History\Sql;
+use \Horde\History\TestBase as TestBase;
+use \Horde_Log_Logger;
+use \Horde_Log_Handler_Cli;
+use \Horde_History_Sql;
+use \PEAR_Config;
+use \Horde_Db_Migration_Migrator;
 
-abstract class Horde_History_Sql_Base extends Horde_History_TestBase
+abstract class BaseTestCase extends TestBase
 {
     protected static $db;
     protected static $dir;
