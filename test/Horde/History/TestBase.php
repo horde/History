@@ -28,11 +28,8 @@ class Horde_History_TestBase extends Horde_Test_Case
 
     public function testMethodLogHasParameterStringGuid()
     {
-        try {
-            self::$history->log(array());
-            $this->fail('No exception!');
-        } catch (InvalidArgumentException $e) {
-        }
+        $this->expectException('InvalidArgumentException');
+        self::$history->log(array());
     }
 
     public function testMethodLogHasArrayParameterBooleanReplaceaction()
@@ -72,11 +69,8 @@ class Horde_History_TestBase extends Horde_Test_Case
 
     public function testMethodGethistoryHasParameterStringGuid()
     {
-        try {
-            self::$history->getHistory(array());
-            $this->fail('No exception!');
-        } catch (InvalidArgumentException $e) {
-        }
+        $this->expectException('InvalidArgumentException');
+        self::$history->getHistory(array());
     }
 
     public function testMethodGethistoryHasResultHordehistorylogRepresentingTheHistoryLogMatchingTheGivenGuid()
@@ -108,20 +102,14 @@ class Horde_History_TestBase extends Horde_Test_Case
 
     public function testMethodGetbytimestampHasParameterStringCmp()
     {
-        try {
-            self::$history->getByTimestamp(array(), 1);
-            $this->fail('No exception!');
-        } catch (InvalidArgumentException $e) {
-        }
+        $this->expectException('InvalidArgumentException');
+        self::$history->getByTimestamp(array(), 1);
     }
 
     public function testMethodGetbytimestampHasParameterIntegerTs()
     {
-        try {
-            self::$history->getByTimestamp('>', 'hello');
-            $this->fail('No exception!');
-        } catch (InvalidArgumentException $e) {
-        }
+        $this->expectException('InvalidArgumentException');
+        self::$history->getByTimestamp('>', 'hello');
     }
 
     public function testMethodGetbytimestampHasParameterArrayFilters()
@@ -184,20 +172,14 @@ class Horde_History_TestBase extends Horde_Test_Case
 
     public function testMethodGetactiontimestampHasParameterStringGuid()
     {
-        try {
-            self::$history->getActionTimestamp(array(), 'test');
-            $this->fail('No exception!');
-        } catch (InvalidArgumentException $e) {
-        }
+        $this->expectException('InvalidArgumentException');
+        self::$history->getActionTimestamp(array(), 'test');
     }
 
     public function testMethodGetactiontimestampHasParameterStringAction()
     {
-        try {
-            self::$history->getActionTimestamp('test', array());
-            $this->fail('No exception!');
-        } catch (InvalidArgumentException $e) {
-        }
+        $this->expectException('InvalidArgumentException');
+        self::$history->getActionTimestamp('test', array());
     }
 
     public function testMethodGetactiontimestampHasResultIntegerZeroIfGethistoryReturnsAnError()
@@ -265,6 +247,8 @@ class Horde_History_TestBase extends Horde_Test_Case
         self::$history->log('test_uid', array('who' => 'you', 'ts' => 2000, 'action' => 'yours_action'));
         self::$history->log('test_uid', array('who' => 'you', 'ts' => 2000, 'action' => 'yours_action'), true);
         self::$history->removeByNames(array());
+
+        $this->markTestIncomplete();
     }
 
     public function testConditionThatEmptyHistoryReturnsAFalseHighestModSeq()

@@ -8,14 +8,20 @@
  * @subpackage UnitTests
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
  */
-class Horde_History_Mock_MockTest extends Horde_History_TestBase
+namespace Horde\History\Mock;
+use Horde_History_TestBase as TestBase;
+use \Horde_History_Mock;
+use \Horde_Cache;
+use \Horde_Cache_Storage_Mock;
+
+class MockTest extends TestBase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         self::$history = new Horde_History_Mock('test');
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         self::$history = null;
     }
