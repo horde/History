@@ -32,7 +32,7 @@ class Horde_History_Log implements IteratorAggregate, ArrayAccess, Countable
     /**
      * TODO
      */
-    protected $_data = array();
+    protected $_data = [];
 
     /**
      * Constructor.
@@ -67,32 +67,36 @@ class Horde_History_Log implements IteratorAggregate, ArrayAccess, Countable
         }
     }
 
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return new ArrayIterator($this->_data);
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return isset($this->_data[$offset]);
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->_data[$offset];
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         $this->_data[$offset] = $value;
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         unset($this->_data[$offset]);
     }
 
-    public function count()
+    public function count(): int
     {
         return count($this->_data);
     }
