@@ -14,7 +14,7 @@ abstract class Horde_History_Sql_Base extends Horde_History_TestBase
     protected static $reason;
     protected static $logger;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
 
@@ -31,7 +31,7 @@ abstract class Horde_History_Sql_Base extends Horde_History_TestBase
         self::$history = new Horde_History_Sql('test_user', self::$db);
     }
 
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         if (self::$db) {
             self::$db->disconnect();
@@ -39,7 +39,7 @@ abstract class Horde_History_Sql_Base extends Horde_History_TestBase
         self::$db = self::$migrator = null;
     }
 
-    public function setUp()
+    public function setUp(): void
     {
         if (!self::$db) {
             $this->markTestSkipped(self::$reason);
@@ -53,7 +53,7 @@ abstract class Horde_History_Sql_Base extends Horde_History_TestBase
         self::$migrator->up();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         if (self::$migrator) {
             self::$migrator->down();
@@ -62,6 +62,7 @@ abstract class Horde_History_Sql_Base extends Horde_History_TestBase
 
     public function testMigration()
     {
+        self::expectNotToPerformAssertions();
         self::$migrator->migrate(1);
         self::$db->insert(
             'INSERT INTO horde_histories (history_id, object_uid, history_ts, history_who, history_desc, history_action, history_extra) VALUES (?, ?, ?, ?, ?, ?, ?)',

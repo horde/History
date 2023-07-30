@@ -24,7 +24,7 @@ class Horde_History_Mongo_MongoTest extends Horde_History_TestBase
     private $_dbname = 'horde_history_mongodbtest';
     private $_mongo;
 
-    public function setUp()
+    public function setUp(): void
     {
         if (($config = self::getConfig('HISTORY_MONGO_TEST_CONFIG', __DIR__ . '/..')) &&
             isset($config['history']['mongo'])) {
@@ -44,7 +44,7 @@ class Horde_History_Mongo_MongoTest extends Horde_History_TestBase
         ));
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         if (!empty($this->_mongo)) {
             $this->_mongo->selectDB(null)->drop();

@@ -11,7 +11,7 @@
  */
 class Horde_History_Sql_Pdo_MysqlTest extends Horde_History_Sql_Base
 {
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         if (!extension_loaded('pdo') ||
             !in_array('mysql', PDO::getAvailableDrivers())) {

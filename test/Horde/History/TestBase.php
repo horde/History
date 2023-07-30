@@ -28,6 +28,7 @@ class Horde_History_TestBase extends Horde_Test_Case
 
     public function testMethodLogHasParameterStringGuid()
     {
+        $this->expectNotToPerformAssertions();
         try {
             self::$history->log(array());
             $this->fail('No exception!');
@@ -72,6 +73,7 @@ class Horde_History_TestBase extends Horde_Test_Case
 
     public function testMethodGethistoryHasParameterStringGuid()
     {
+        $this->expectNotToPerformAssertions();
         try {
             self::$history->getHistory(array());
             $this->fail('No exception!');
@@ -108,6 +110,7 @@ class Horde_History_TestBase extends Horde_Test_Case
 
     public function testMethodGetbytimestampHasParameterStringCmp()
     {
+        $this->expectNotToPerformAssertions();
         try {
             self::$history->getByTimestamp(array(), 1);
             $this->fail('No exception!');
@@ -117,6 +120,7 @@ class Horde_History_TestBase extends Horde_Test_Case
 
     public function testMethodGetbytimestampHasParameterIntegerTs()
     {
+        $this->expectNotToPerformAssertions();
         try {
             self::$history->getByTimestamp('>', 'hello');
             $this->fail('No exception!');
@@ -184,6 +188,7 @@ class Horde_History_TestBase extends Horde_Test_Case
 
     public function testMethodGetactiontimestampHasParameterStringGuid()
     {
+        $this->expectNotToPerformAssertions();
         try {
             self::$history->getActionTimestamp(array(), 'test');
             $this->fail('No exception!');
@@ -193,6 +198,7 @@ class Horde_History_TestBase extends Horde_Test_Case
 
     public function testMethodGetactiontimestampHasParameterStringAction()
     {
+        $this->expectNotToPerformAssertions();
         try {
             self::$history->getActionTimestamp('test', array());
             $this->fail('No exception!');
@@ -260,6 +266,7 @@ class Horde_History_TestBase extends Horde_Test_Case
 
     public function testMethodRemovebynamesSucceedsIfParameterNamesIsEmpty()
     {
+        $this->expectNotToPerformAssertions();
         self::$history->log('test_uid', array('who' => 'me', 'ts' => 1000, 'action' => 'test_action'));
         self::$history->log('test_uid', array('who' => 'me', 'ts' => 1000, 'action' => 'test_action'), false);
         self::$history->log('test_uid', array('who' => 'you', 'ts' => 2000, 'action' => 'yours_action'));

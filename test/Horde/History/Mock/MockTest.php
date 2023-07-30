@@ -10,12 +10,12 @@
  */
 class Horde_History_Mock_MockTest extends Horde_History_TestBase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         self::$history = new Horde_History_Mock('test');
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         self::$history = null;
     }
