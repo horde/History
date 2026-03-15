@@ -9,7 +9,6 @@
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
   notes: |+
-    
 3.0.0alpha4:
   api: 3.0.0alpha1
   state:
@@ -52,6 +51,71 @@
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
   notes: ~
+3.0.0-beta1:
+  api: 3.0.0-beta1
+  state:
+    release: beta
+    api: beta
+  date: 2026-03-15
+  license:
+    identifier: LGPL-2.1-only
+    uri: https://spdx.org/licenses/LGPL-2.1-only.html
+  notes: |-
+    style: apply php-cs-fixer rules
+    Development mode for History-3.0.0alpha5
+    Released History-3.0.0alpha4
+    Update metadata and workflows for PHP 8 support
+    Add CI job for satis repo update
+    Update bootstrap.php
+    Add CI
+    Fix leftover conversions
+    no errors left
+    Development mode for History-3.0.0alpha5
+    Released History-3.0.0alpha3
+    Development mode for History-3.0.0alpha4
+    Released History-3.0.0alpha2
+    Development mode for History-3.0.0alpha3
+    Released History-3.0.0alpha1
+    Components updated the package files.
+    Merge pull request #1 from maintaina-com/backport-php81-compat
+    Improve PHP 8.1 compat
+    Update supported PHP versions and configuration names.
+    Standardize descriptions.
+    Add chomp character.
+    Enable PHP 7.3 CI.
+    Update package definitions.
+    Fix getting exit code on PHP 7.2+.
+    Mark Chuck and Michael as inactive.
+    package.xml must not contain empty <notes> tags.
+    Create CHANGES for all components.
+    Regenerate package.xml from changelog.yml.
+    Build changelog.yml from existing changelog(s).
+    Update .horde.yml with extended information.
+    Update composer.json.
+    Enable 7.2 builds.
+    PEAR on 5.6 and 7.0 is fixed.
+    Update file list
+    Move phpunit configuration to base directory.
+    Update references to COPYING files.
+    Use LICENSE consistently and move to base directory.
+    Stop flooding #horde channel.
+    Use https URLs.
+    Install all dependencies but PECL extensions.
+    Hopefully this finally fixes Travis builds now.
+    Always discover channel manually, due to Travis bug.
+    Fix Travis tests.
+    Add Travis configuration and .gitignore files.
+    More phpdoc fixes.
+    Add type parameter to .horde.yml files.
+    Update composer information.
+    Updated composer definitions.
+    Rename horde.yml files.
+    Don't use each().
+    Standardize library full names.
+    Generate horde.yml files for all components.
+    Happy New Year!
+    Use HTTPS.
+    Development mode for Horde_History-2.3.7
 2.3.6:
   api: 2.3.0
   state:
@@ -255,17 +319,6 @@
     uri: http://www.horde.org/licenses/lgpl21
   notes: |
     [mms] Use new Horde_Test layout.
-2.0.0:
-  api: 1.0.0
-  state:
-    release: stable
-    api: stable
-  date: 2012-10-30
-  license:
-    identifier: LGPL-2.1
-    uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    First stable release for Horde 5.
 2.0.0beta1:
   api: 1.0.0
   state:
@@ -288,6 +341,17 @@
     uri: http://www.horde.org/licenses/lgpl21
   notes: |
     First alpha release for Horde 5.
+2.0.0:
+  api: 1.0.0
+  state:
+    release: stable
+    api: stable
+  date: 2012-10-30
+  license:
+    identifier: LGPL-2.1
+    uri: http://www.horde.org/licenses/lgpl21
+  notes: |
+    First stable release for Horde 5.
 1.0.1:
   api: 1.0.0
   state:
@@ -299,39 +363,6 @@
     uri: http://www.horde.org/licenses/lgpl21
   notes: |
     [rla] Add license file.
-1.0.0:
-  api: 1.0.0
-  state:
-    release: stable
-    api: stable
-  date: 2011-04-06
-  license:
-    identifier: LGPL-2.1
-    uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    First stable release for Horde 4.
-1.0.0RC2:
-  api: 1.0.0
-  state:
-    release: beta
-    api: beta
-  date: 2011-03-29
-  license:
-    identifier: LGPL-2.1
-    uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    Second release candidate for Horde 4.
-1.0.0RC1:
-  api: 1.0.0
-  state:
-    release: beta
-    api: beta
-  date: 2011-03-22
-  license:
-    identifier: LGPL-2.1
-    uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    First release candidate for Horde 4.
 1.0.0beta1:
   api: 1.0.0
   state:
@@ -354,6 +385,39 @@
     uri: http://www.horde.org/licenses/lgpl21
   notes: |
     First alpha release for Horde 4.
+1.0.0RC2:
+  api: 1.0.0
+  state:
+    release: beta
+    api: beta
+  date: 2011-03-29
+  license:
+    identifier: LGPL-2.1
+    uri: http://www.horde.org/licenses/lgpl21
+  notes: |
+    Second release candidate for Horde 4.
+1.0.0RC1:
+  api: 1.0.0
+  state:
+    release: beta
+    api: beta
+  date: 2011-03-22
+  license:
+    identifier: LGPL-2.1
+    uri: http://www.horde.org/licenses/lgpl21
+  notes: |
+    First release candidate for Horde 4.
+1.0.0:
+  api: 1.0.0
+  state:
+    release: stable
+    api: stable
+  date: 2011-04-06
+  license:
+    identifier: LGPL-2.1
+    uri: http://www.horde.org/licenses/lgpl21
+  notes: |
+    First stable release for Horde 4.
 0.0.2:
   api: 0.0.2
   state:
