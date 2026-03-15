@@ -1,4 +1,5 @@
 <?php
+
 class HordeHistoryUpgradeAutoIncrement extends Horde_Db_Migration_Base
 {
     public function up()
@@ -12,6 +13,6 @@ class HordeHistoryUpgradeAutoIncrement extends Horde_Db_Migration_Base
 
     public function down()
     {
-        $this->changeColumn('horde_histories', 'history_id', 'integer', array('null' => false, 'unsigned' => true));
+        $this->changeColumn('horde_histories', 'history_id', 'integer', ['null' => false, 'unsigned' => true]);
     }
 }

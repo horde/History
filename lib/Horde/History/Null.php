@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Copyright 2014-2017 Horde LLC (http://www.horde.org/)
+ * Copyright 2014-2026 Horde LLC (http://www.horde.org/)
  *
  * See the enclosed file LICENSE for license information (LGPL). If you
  * did not receive this file, see http://www.horde.org/licenses/lgpl21.
@@ -32,31 +33,31 @@ class Horde_History_Null extends Horde_History
     /**
      */
     protected function _log(
-        Horde_History_Log $history, array $attributes, $replaceAction = false
-    )
-    {
-    }
+        Horde_History_Log $history,
+        array $attributes,
+        $replaceAction = false
+    ) {}
 
     /**
      */
     public function _getHistory($guid)
     {
-        return new Horde_History_Log($guid, array());
+        return new Horde_History_Log($guid, []);
     }
 
     /**
      */
     public function _getByTimestamp(
-        $cmp, $ts, array $filters = array(), $parent = null
-    )
-    {
-        return array();
+        $cmp,
+        $ts,
+        array $filters = [],
+        $parent = null
+    ) {
+        return [];
     }
 
     /**
      */
-    public function removeByNames(array $names)
-    {
-    }
+    public function removeByNames(array $names) {}
 
 }

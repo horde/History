@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Copyright 2014-2017 Horde LLC (http://www.horde.org/)
+ * Copyright 2014-2026 Horde LLC (http://www.horde.org/)
  *
  * See the enclosed file LICENSE for license information (LGPL). If you
  * did not receive this file, see http://www.horde.org/licenses/lgpl21.
@@ -20,22 +21,20 @@
  * @license   http://www.horde.org/licenses/lgpl21 LGPL 2.1
  * @package   History
  */
-class Horde_History_Mongo
-extends Horde_History
-implements Horde_Mongo_Collection_Index
+class Horde_History_Mongo extends Horde_History implements Horde_Mongo_Collection_Index
 {
     /** Mongo collection name. */
-    const MONGO_DATA = 'horde_history_data';
-    const MONGO_MODSEQ = 'horde_history_modseq';
+    public const MONGO_DATA = 'horde_history_data';
+    public const MONGO_MODSEQ = 'horde_history_modseq';
 
     /** Mongo field names. */
-    const ACTION = 'action';
-    const DESC = 'desc';
-    const EXTRA = 'extra';
-    const MODSEQ = 'modseq';
-    const TS = 'ts';
-    const UID = 'uid';
-    const WHO = 'who';
+    public const ACTION = 'action';
+    public const DESC = 'desc';
+    public const EXTRA = 'extra';
+    public const MODSEQ = 'modseq';
+    public const TS = 'ts';
+    public const UID = 'uid';
+    public const WHO = 'who';
 
     /**
      * MongoDB object used to manage the history.
@@ -49,22 +48,22 @@ implements Horde_Mongo_Collection_Index
      *
      * @var array
      */
-    protected $_indices = array(
-        self::MONGO_DATA => array(
-            'index_action' => array(
-                self::ACTION => 1
-            ),
-            'index_modseq' => array(
-                self::MODSEQ => 1
-            ),
-            'index_ts' => array(
-                self::TS => 1
-            ),
-            'index_uid' => array(
-                self::UID => 1
-            )
-        )
-    );
+    protected $_indices = [
+        self::MONGO_DATA => [
+            'index_action' => [
+                self::ACTION => 1,
+            ],
+            'index_modseq' => [
+                self::MODSEQ => 1,
+            ],
+            'index_ts' => [
+                self::TS => 1,
+            ],
+            'index_uid' => [
+                self::UID => 1,
+            ],
+        ],
+    ];
 
     /**
      * Constructor.
@@ -80,7 +79,7 @@ implements Horde_Mongo_Collection_Index
      *   </ul>
      *  </li>
      */
-    public function __construct($auth, array $params = array())
+    public function __construct($auth, array $params = [])
     {
         if (!isset($params['mongo_db'])) {
             throw new InvalidArgumentException('Missing mongo_db parameter.');
@@ -103,16 +102,16 @@ implements Horde_Mongo_Collection_Index
 
         try {
             $cursor = $this->_db->selectCollection(self::MONGO_DATA)->find(
-                array(
+                [
                     self::ACTION => $action,
-                    self::UID => $guid
-                ),
-                array(
-                    self::TS => true
-                )
+                    self::UID => $guid,
+                ],
+                [
+                    self::TS => true,
+                ]
             )
             ->limit(1)
-            ->sort(array(self::TS => -1));
+            ->sort([self::TS => -1]);
             $next = $cursor->getNext();
             return intval($next[self::TS]);
         } catch (MongoException $e) {
@@ -122,30 +121,32 @@ implements Horde_Mongo_Collection_Index
 
     /**
      */
-    protected function _log(Horde_History_Log $history, array $attributes,
-                            $replaceAction = false)
-    {
+    protected function _log(
+        Horde_History_Log $history,
+        array $attributes,
+        $replaceAction = false
+    ) {
         $extra = array_diff_key(
             $attributes,
-            array_flip(array('action', 'desc', 'ts', 'who'))
+            array_flip(['action', 'desc', 'ts', 'who'])
         );
 
-        $data = array(
+        $data = [
             self::DESC => ((isset($attributes['desc']) && strlen($attributes['desc'])) ? $attributes['desc'] : null),
             self::EXTRA => (empty($extra) ? null : serialize($extra)),
             self::MODSEQ => $this->_nextModSeq(),
             self::TS => $attributes['ts'],
-            self::WHO => $attributes['who']
-        );
+            self::WHO => $attributes['who'],
+        ];
 
         if ($replaceAction && !empty($attributes['action'])) {
             foreach ($history as $entry) {
-                if (!empty($entry['action']) &&
-                    ($entry['action'] == $attributes['action'])) {
+                if (!empty($entry['action'])
+                    && ($entry['action'] == $attributes['action'])) {
                     try {
                         $this->_db->selectCollection(self::MONGO_DATA)->update(
-                            array('_id' => $entry['id']),
-                            array('$set' => $data)
+                            ['_id' => $entry['id']],
+                            ['$set' => $data]
                         );
                     } catch (MongoException $e) {
                         throw new Horde_History_Exception($e);
@@ -158,9 +159,8 @@ implements Horde_Mongo_Collection_Index
 
         /* If we're not replacing by action, or if we didn't find an entry to
          * replace, insert a new row. */
-        $data[self::ACTION] = isset($attributes['action'])
-            ? $attributes['action']
-            : null;
+        $data[self::ACTION] = $attributes['action']
+            ?? null;
         $data[self::UID] = $history->uid;
 
         try {
@@ -176,7 +176,7 @@ implements Horde_Mongo_Collection_Index
     {
         try {
             $cursor = $this->_db->selectCollection(self::MONGO_DATA)->find(
-                array(self::UID => $guid)
+                [self::UID => $guid]
             );
         } catch (MongoException $e) {
             throw new Horde_History_Exception($e);
@@ -187,31 +187,36 @@ implements Horde_Mongo_Collection_Index
 
     /**
      */
-    public function _getByTimestamp($cmp, $ts, array $filters = array(),
-                                    $parent = null)
-    {
-        array_unshift($filters, array(
+    public function _getByTimestamp(
+        $cmp,
+        $ts,
+        array $filters = [],
+        $parent = null
+    ) {
+        array_unshift($filters, [
             'field' => self::TS,
             'op' => $cmp,
-            'value' => $ts
-        ));
+            'value' => $ts,
+        ]);
 
-        return $this->_assocQuery(array(), $filters, $parent);
+        return $this->_assocQuery([], $filters, $parent);
     }
 
     /**
      */
     protected function _getByModSeq(
-        $start, $end, $filters = array(), $parent = null
-    )
-    {
+        $start,
+        $end,
+        $filters = [],
+        $parent = null
+    ) {
         return $this->_assocQuery(
-            array(
-                self::MODSEQ => array(
+            [
+                self::MODSEQ => [
                     '$gt' => $start,
-                    '$lte' => $end
-                )
-            ),
+                    '$lte' => $end,
+                ],
+            ],
             $filters,
             $parent
         );
@@ -232,9 +237,9 @@ implements Horde_Mongo_Collection_Index
         }
 
         try {
-            $this->_db->selectCollection(self::MONGO_DATA)->remove(array(
-                self::UID => array('$in' => $names)
-            ));
+            $this->_db->selectCollection(self::MONGO_DATA)->remove([
+                self::UID => ['$in' => $names],
+            ]);
         } catch (MongoException $e) {
             throw new Horde_History_Exception($e);
         }
@@ -244,11 +249,11 @@ implements Horde_Mongo_Collection_Index
      */
     public function getHighestModSeq($parent = null)
     {
-        $ops = array();
+        $ops = [];
         if (!empty($parent)) {
-            $ops[self::UID] = array(
-                '$regex' => preg_quote($parent) . ':*'
-            );
+            $ops[self::UID] = [
+                '$regex' => preg_quote($parent) . ':*',
+            ];
         }
 
         try {
@@ -256,11 +261,11 @@ implements Horde_Mongo_Collection_Index
              * MongoDB 2.1+. */
             $cursor = $this->_db->selectCollection(self::MONGO_DATA)->find(
                 $ops,
-                array(self::MODSEQ => true)
+                [self::MODSEQ => true]
             )
-            ->sort(array(
-                self::MODSEQ => -1
-            ))
+            ->sort([
+                self::MODSEQ => -1,
+            ])
             ->limit(1);
 
             if ($next = $cursor->getNext()) {
@@ -268,7 +273,7 @@ implements Horde_Mongo_Collection_Index
             }
 
             $cursor = $this->_db->selectCollection(self::MONGO_MODSEQ)->find(
-                array('_id' => 'modseq')
+                ['_id' => 'modseq']
             );
             return ($next = $cursor->getNext())
                 ? $next[self::MODSEQ]
@@ -284,10 +289,10 @@ implements Horde_Mongo_Collection_Index
     {
         try {
             $res = $this->_db->selectCollection(self::MONGO_MODSEQ)->findAndModify(
-                array('_id' => 'modseq'),
-                array('$inc' => array(self::MODSEQ => 1)),
-                array(),
-                array('new' => true, 'upsert' => true)
+                ['_id' => 'modseq'],
+                ['$inc' => [self::MODSEQ => 1]],
+                [],
+                ['new' => true, 'upsert' => true]
             );
             return $res[self::MODSEQ];
         } catch (MongoException $e) {
@@ -301,17 +306,16 @@ implements Horde_Mongo_Collection_Index
     {
         try {
             $cursor = $this->_db->selectCollection(self::MONGO_DATA)->find(
-                array(self::UID => $guid)
+                [self::UID => $guid]
             )
-            ->sort(array(
-                ($use_ts ? self::TS : self::MODSEQ) => -1
-            ))
+            ->sort([
+                ($use_ts ? self::TS : self::MODSEQ) => -1,
+            ])
             ->limit(1);
 
             $log = new Horde_History_Log($guid, $this->_cursorToRow($cursor));
-            return isset($log[0])
-                ? $log[0]
-                : false;
+            return $log[0]
+                ?? false;
         } catch (MongoException $e) {
             throw new Horde_History_Exception($e);
         }
@@ -325,41 +329,41 @@ implements Horde_Mongo_Collection_Index
     {
         foreach ($filters as $val) {
             switch ($val['op']) {
-            case '>':
-                $query[$val['field']] = array('$gt' => $val['value']);
-                break;
+                case '>':
+                    $query[$val['field']] = ['$gt' => $val['value']];
+                    break;
 
-            case '>=':
-                $query[$val['field']] = array('$gte' => $val['value']);
-                break;
+                case '>=':
+                    $query[$val['field']] = ['$gte' => $val['value']];
+                    break;
 
-            case '<':
-                $query[$val['field']] = array('$lt' => $val['value']);
-                break;
+                case '<':
+                    $query[$val['field']] = ['$lt' => $val['value']];
+                    break;
 
-            case '<=':
-                $query[$val['field']] = array('$lte' => $val['value']);
-                break;
+                case '<=':
+                    $query[$val['field']] = ['$lte' => $val['value']];
+                    break;
 
-            case '=':
-                $query[$val['field']] = $val['value'];
-                break;
+                case '=':
+                    $query[$val['field']] = $val['value'];
+                    break;
             }
         }
 
         if ($parent) {
-            $query[self::UID] = array(
-                '$regex' => preg_quote($parent) . ':*'
-            );
+            $query[self::UID] = [
+                '$regex' => preg_quote($parent) . ':*',
+            ];
         }
 
         try {
             $cursor = $this->_db->selectCollection(self::MONGO_DATA)->find(
                 $query,
-                array(self::UID => true)
+                [self::UID => true]
             );
 
-            $out = array();
+            $out = [];
             foreach ($cursor as $val) {
                 $out[$val[self::UID]] = strval($val['_id']);
             }
@@ -377,24 +381,23 @@ implements Horde_Mongo_Collection_Index
      */
     protected function _cursorToRow(MongoCursor $cursor)
     {
-        $mapping = array(
+        $mapping = [
             '_id' => 'history_id',
             self::ACTION => 'history_action',
             self::DESC => 'history_desc',
             self::EXTRA => 'history_extra',
             self::MODSEQ => 'history_modseq',
             self::TS => 'history_ts',
-            self::WHO => 'history_who'
-        );
-        $out = array();
+            self::WHO => 'history_who',
+        ];
+        $out = [];
 
         foreach ($cursor as $val) {
-            $row = array();
+            $row = [];
 
             foreach ($mapping as $key2 => $val2) {
-                $row[$val2] = isset($val[$key2])
-                    ? $val[$key2]
-                    : null;
+                $row[$val2] = $val[$key2]
+                    ?? null;
             }
 
             $out[] = $row;

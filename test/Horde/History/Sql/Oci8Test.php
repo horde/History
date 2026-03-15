@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Copyright 2014-2017 Horde LLC (http://www.horde.org/)
+ * Copyright 2014-2026 Horde LLC (http://www.horde.org/)
  *
  * @author     Jan Schneider <jan@horde.org>
  * @category   Horde
@@ -8,9 +9,14 @@
  * @subpackage UnitTests
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
  */
-namespace Horde\History\Sql;
-use \Horde_Db_Adapter_Oci8;
 
+namespace Horde\History\Sql;
+
+use Horde_Db_Adapter_Oci8;
+
+/**
+ * @coversNothing
+ */
 class Oci8Test extends BaseTestCase
 {
     public static function setUpBeforeClass(): void

@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Copyright 2003-2017 Horde LLC (http://www.horde.org/)
+ * Copyright 2003-2026 Horde LLC (http://www.horde.org/)
  *
  * See the enclosed file LICENSE for license information (LGPL). If you
  * did not receive this file, see http://www.horde.org/licenses/lgpl21.
@@ -100,9 +101,11 @@ abstract class Horde_History
      *
      * @throws Horde_History_Exception
      */
-    public function log($guid, array $attributes = array(),
-                        $replaceAction = false)
-    {
+    public function log(
+        $guid,
+        array $attributes = [],
+        $replaceAction = false
+    ) {
         if (!is_string($guid)) {
             throw new InvalidArgumentException('The guid needs to be a string!');
         }
@@ -138,8 +141,11 @@ abstract class Horde_History
      *
      * @throws Horde_History_Exception
      */
-    abstract protected function _log(Horde_History_Log $history,
-                                     array $attributes, $replaceAction = false);
+    abstract protected function _log(
+        Horde_History_Log $history,
+        array $attributes,
+        $replaceAction = false
+    );
 
     /**
      * Returns a Horde_History_Log corresponding to the named history entry,
@@ -157,8 +163,8 @@ abstract class Horde_History
             throw new InvalidArgumentException('The guid needs to be a string!');
         }
 
-        if ($this->_cache &&
-            ($history = @unserialize($this->_cache->get('horde:history:' . $guid, 0)))) {
+        if ($this->_cache
+            && ($history = @unserialize($this->_cache->get('horde:history:' . $guid, 0)))) {
             return $history;
         }
 
@@ -205,9 +211,12 @@ abstract class Horde_History
      *
      * @throws Horde_History_Exception
      */
-    public function getByTimestamp($cmp, $ts, array $filters = array(),
-                                   $parent = null)
-    {
+    public function getByTimestamp(
+        $cmp,
+        $ts,
+        array $filters = [],
+        $parent = null
+    ) {
         if (!is_string($cmp)) {
             throw new InvalidArgumentException('The comparison operator needs to be a string!');
         }
@@ -237,7 +246,7 @@ abstract class Horde_History
      * @return array  An array of history object ids, or an empty array if
      *                none matched the criteria.
      */
-    public function getByModSeq($start, $end, $filters = array(), $parent = null)
+    public function getByModSeq($start, $end, $filters = [], $parent = null)
     {
         if (!is_integer($start) || !is_integer($end)) {
             throw new InvalidArgumentException('The modseq values must be integers!');
@@ -245,7 +254,7 @@ abstract class Horde_History
 
         // Exit early if there is no range.
         if ($start == $end) {
-            return array();
+            return [];
         }
 
         return $this->_getByModSeq($start, $end, $filters, $parent);
@@ -276,9 +285,12 @@ abstract class Horde_History
      *
      * @throws Horde_History_Exception
      */
-    abstract public function _getByTimestamp($cmp, $ts,
-                                             array $filters = array(),
-                                             $parent = null);
+    abstract public function _getByTimestamp(
+        $cmp,
+        $ts,
+        array $filters = [],
+        $parent = null
+    );
 
     /**
      * Gets the timestamp of the most recent change to $guid.
@@ -310,7 +322,7 @@ abstract class Horde_History
             }
         }
 
-        return (int)$last;
+        return (int) $last;
     }
 
     /**
@@ -323,7 +335,7 @@ abstract class Horde_History
     public function removeByParent($parent)
     {
         /* Remove entries 100 at a time. */
-        $all = array_keys($this->getByTimestamp('>', 0, array(), $parent));
+        $all = array_keys($this->getByTimestamp('>', 0, [], $parent));
 
         while (count($d = array_splice($all, 0, 100)) > 0) {
             $this->removebyNames($d);
@@ -385,7 +397,7 @@ abstract class Horde_History
             }
         }
 
-        return (int)$last;
+        return (int) $last;
     }
 
     /**
@@ -409,7 +421,7 @@ abstract class Horde_History
             return false;
         }
 
-        $last = array('modseq' => -1, 'ts' => -1);
+        $last = ['modseq' => -1, 'ts' => -1];
         if ($use_ts) {
             foreach ($log as $entry) {
                 if ($entry['ts'] > $last['ts']) {

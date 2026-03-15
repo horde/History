@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Copyright 2009-2017 Horde LLC (http://www.horde.org/)
+ * Copyright 2009-2026 Horde LLC (http://www.horde.org/)
  *
  * See the enclosed file LICENSE for license information (LGPL). If you
  * did not receive this file, see http://www.horde.org/licenses/lgpl21.
@@ -37,7 +38,7 @@ class Horde_History_Mock extends Horde_History
      *
      * @var array
      */
-    private $_data = array();
+    private $_data = [];
 
     /**
      * The next id.
@@ -68,17 +69,19 @@ class Horde_History_Mock extends Horde_History
      *
      * @throws Horde_History_Exception
      */
-    protected function _log(Horde_History_Log $history, array $attributes,
-                            $replaceAction = false)
-    {
-        $values = array(
+    protected function _log(
+        Horde_History_Log $history,
+        array $attributes,
+        $replaceAction = false
+    ) {
+        $values = [
             'history_uid'    => $history->uid,
             'history_ts'     => $attributes['ts'],
             'history_who'    => $attributes['who'],
-            'history_desc'   => isset($attributes['desc']) ? $attributes['desc'] : null,
-            'history_action' => isset($attributes['action']) ? $attributes['action'] : null,
-            'history_modseq' => ++$this->_modseq
-        );
+            'history_desc'   => $attributes['desc'] ?? null,
+            'history_action' => $attributes['action'] ?? null,
+            'history_modseq' => ++$this->_modseq,
+        ];
 
         unset($attributes['ts'], $attributes['who'], $attributes['desc'], $attributes['action']);
 
@@ -92,8 +95,8 @@ class Horde_History_Mock extends Horde_History
         $done = false;
         if ($replaceAction && !empty($values['history_action'])) {
             foreach ($history as $entry) {
-                if (!empty($entry['action']) &&
-                    $entry['action'] == $values['history_action']) {
+                if (!empty($entry['action'])
+                    && $entry['action'] == $values['history_action']) {
                     $this->_data[$entry['id']] = $values;
                     $done = true;
                     break;
@@ -120,7 +123,7 @@ class Horde_History_Mock extends Horde_History
     public function _getHistory($guid)
     {
         $this->getCount++;
-        $result = array();
+        $result = [];
         foreach ($this->_data as $id => $element) {
             if ($element['history_uid'] == $guid) {
                 $element['history_id'] = $id;
@@ -153,45 +156,48 @@ class Horde_History_Mock extends Horde_History
      *
      * @throws Horde_History_Exception
      */
-    public function _getByTimestamp($cmp, $ts, array $filters = array(),
-                                    $parent = null)
-    {
-        $result = array();
+    public function _getByTimestamp(
+        $cmp,
+        $ts,
+        array $filters = [],
+        $parent = null
+    ) {
+        $result = [];
 
         foreach ($this->_data as $id => $element) {
 
             $ignore = false;
 
             switch ($cmp) {
-            case '<=':
-            case '=<':
-                if ($element['history_ts'] > $ts) {
-                    $ignore = true;
-                };
-                break;
-            case '<':
-                if ($element['history_ts'] >= $ts) {
-                    $ignore = true;
-                };
-                break;
-            case '=':
-                if ($element['history_ts'] != $ts) {
-                    $ignore = true;
-                };
-                break;
-            case '>':
-                if ($element['history_ts'] <= $ts) {
-                    $ignore = true;
-                };
-                break;
-            case '>=':
-            case '=>':
-                if ($element['history_ts'] < $ts) {
-                    $ignore = true;
-                };
-                break;
-            default:
-                throw new InvalidArgumentException(sprintf("Comparison %s not implemented!", $cmp));
+                case '<=':
+                case '=<':
+                    if ($element['history_ts'] > $ts) {
+                        $ignore = true;
+                    };
+                    break;
+                case '<':
+                    if ($element['history_ts'] >= $ts) {
+                        $ignore = true;
+                    };
+                    break;
+                case '=':
+                    if ($element['history_ts'] != $ts) {
+                        $ignore = true;
+                    };
+                    break;
+                case '>':
+                    if ($element['history_ts'] <= $ts) {
+                        $ignore = true;
+                    };
+                    break;
+                case '>=':
+                case '=>':
+                    if ($element['history_ts'] < $ts) {
+                        $ignore = true;
+                    };
+                    break;
+                default:
+                    throw new InvalidArgumentException(sprintf("Comparison %s not implemented!", $cmp));
             }
 
             if ($ignore) {
@@ -245,9 +251,9 @@ class Horde_History_Mock extends Horde_History
      * @return array  An array of history object ids, or an empty array if
      *                none matched the criteria.
      */
-    protected function _getByModSeq($start, $end, $filters = array(), $parent = null)
+    protected function _getByModSeq($start, $end, $filters = [], $parent = null)
     {
-        $result = array();
+        $result = [];
         foreach ($this->_data as $id => $element) {
             $ignore = false;
             if (!($element['history_modseq'] > $start && $element['history_modseq'] <= $end)) {
@@ -321,7 +327,7 @@ class Horde_History_Mock extends Horde_History
             return;
         }
 
-        $ids = array();
+        $ids = [];
         foreach ($this->_data as $id => $element) {
             if (in_array($element['history_uid'], $names)) {
                 $ids[] = $id;

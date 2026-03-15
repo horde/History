@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Copyright 2003-2017 Horde LLC (http://www.horde.org/)
+ * Copyright 2003-2026 Horde LLC (http://www.horde.org/)
  *
  * See the enclosed file LICENSE for license information (LGPL). If you
  * did not receive this file, see http://www.horde.org/licenses/lgpl21.
@@ -58,12 +59,12 @@ class Horde_History_Sql extends Horde_History
         }
 
         try {
-            $result = $this->_db->selectValue('SELECT MAX(history_ts) FROM horde_histories WHERE history_action = ? AND object_uid = ?', array($action, $guid));
+            $result = $this->_db->selectValue('SELECT MAX(history_ts) FROM horde_histories WHERE history_action = ? AND object_uid = ?', [$action, $guid]);
         } catch (Horde_Db_Exception $e) {
             return 0;
         }
 
-        return (int)$result;
+        return (int) $result;
     }
 
     /**
@@ -81,22 +82,24 @@ class Horde_History_Sql extends Horde_History
      *
      * @throws Horde_History_Exception
      */
-    protected function _log(Horde_History_Log $history, array $attributes,
-                            $replaceAction = false)
-    {
+    protected function _log(
+        Horde_History_Log $history,
+        array $attributes,
+        $replaceAction = false
+    ) {
         /* If we want to replace an entry with the same action, try and find
          * one. Track whether or not we succeed in $done, so we know whether or
          * not to add the entry later. */
         $done = false;
         if ($replaceAction && !empty($attributes['action'])) {
             foreach ($history as $entry) {
-                if (!empty($entry['action']) &&
-                    $entry['action'] == $attributes['action']) {
-                    $values = array(
+                if (!empty($entry['action'])
+                    && $entry['action'] == $attributes['action']) {
+                    $values = [
                         $attributes['ts'],
                         $attributes['who'],
-                        isset($attributes['desc']) ? $attributes['desc'] : null
-                    );
+                        $attributes['desc'] ?? null,
+                    ];
 
                     unset($attributes['ts'], $attributes['who'], $attributes['desc'], $attributes['action']);
 
@@ -107,11 +110,12 @@ class Horde_History_Sql extends Horde_History
                     $values[] = $entry['id'];
                     try {
                         $this->_db->update(
-                            'UPDATE horde_histories SET history_ts = ?,' .
-                            ' history_who = ?,' .
-                            ' history_desc = ?,' .
-                            ' history_extra = ?,' .
-                            ' history_modseq = ? WHERE history_id = ?', $values
+                            'UPDATE horde_histories SET history_ts = ?,'
+                            . ' history_who = ?,'
+                            . ' history_desc = ?,'
+                            . ' history_extra = ?,'
+                            . ' history_modseq = ? WHERE history_id = ?',
+                            $values
                         );
                     } catch (Horde_Db_Exception $e) {
                         throw new Horde_History_Exception($e);
@@ -126,14 +130,14 @@ class Horde_History_Sql extends Horde_History
         /* If we're not replacing by action, or if we didn't find an entry to
          * replace, insert a new row. */
         if (!$done) {
-            $values = array(
+            $values = [
                 $history->uid,
                 $attributes['ts'],
                 $attributes['who'],
-                isset($attributes['desc']) ? $attributes['desc'] : null,
-                isset($attributes['action']) ? $attributes['action'] : null,
-                $this->_nextModSeq()
-            );
+                $attributes['desc'] ?? null,
+                $attributes['action'] ?? null,
+                $this->_nextModSeq(),
+            ];
 
             unset($attributes['ts'], $attributes['who'], $attributes['desc'], $attributes['action']);
 
@@ -143,8 +147,9 @@ class Horde_History_Sql extends Horde_History
 
             try {
                 $this->_db->insert(
-                    'INSERT INTO horde_histories (object_uid, history_ts, history_who, history_desc, history_action, history_modseq, history_extra)' .
-                    ' VALUES (?, ?, ?, ?, ?, ?, ?)', $values
+                    'INSERT INTO horde_histories (object_uid, history_ts, history_who, history_desc, history_action, history_modseq, history_extra)'
+                    . ' VALUES (?, ?, ?, ?, ?, ?, ?)',
+                    $values
                 );
             } catch (Horde_Db_Exception $e) {
                 throw new Horde_History_Exception($e);
@@ -164,7 +169,7 @@ class Horde_History_Sql extends Horde_History
     public function _getHistory($guid)
     {
         try {
-            $rows = $this->_db->selectAll('SELECT * FROM horde_histories WHERE object_uid = ?', array($guid));
+            $rows = $this->_db->selectAll('SELECT * FROM horde_histories WHERE object_uid = ?', [$guid]);
         } catch (Horde_Db_Exception $e) {
             throw new Horde_History_Exception($e);
         }
@@ -200,11 +205,14 @@ class Horde_History_Sql extends Horde_History
      *                guarantee which entry will be returned.
      * @throws Horde_History_Exception
      */
-    public function _getByTimestamp($cmp, $ts, array $filters = array(),
-                                    $parent = null)
-    {
+    public function _getByTimestamp(
+        $cmp,
+        $ts,
+        array $filters = [],
+        $parent = null
+    ) {
         /* Build the timestamp test. */
-        $where = array("history_ts $cmp $ts");
+        $where = ["history_ts $cmp $ts"];
 
         /* Add additional filters, if there are any. */
         try {
@@ -251,15 +259,16 @@ class Horde_History_Sql extends Horde_History
      *                matches withing the range requested, there is no
      *                guarantee which entry will be returned.
      */
-    protected function _getByModSeq($start, $end, $filters = array(), $parent = null)
+    protected function _getByModSeq($start, $end, $filters = [], $parent = null)
     {
         // Build the modseq test.
-        $where = array(
+        $where = [
             sprintf(
                 'history_modseq > %d AND history_modseq <= %d',
                 $start,
-                $end)
-        );
+                $end
+            ),
+        ];
 
         // Add additional filters, if there are any.
         try {
@@ -292,7 +301,7 @@ class Horde_History_Sql extends Horde_History
             return;
         }
 
-        $ids = array();
+        $ids = [];
         try {
             foreach ($names as $name) {
                 $ids[] = $this->_db->quote($name);
@@ -329,7 +338,7 @@ class Horde_History_Sql extends Horde_History
                 $sql .= ' WHERE object_uid LIKE ' . $this->_db->quote($parent . ':%');
             }
             $sql .= ' ORDER BY history_modseq DESC';
-            $sql = $this->_db->addLimitOffset($sql, array('limit' => 1));
+            $sql = $this->_db->addLimitOffset($sql, ['limit' => 1]);
 
             $modseq = $this->_db->selectValue($sql);
             if (is_null($modseq) || $modseq === false) {
@@ -358,7 +367,7 @@ class Horde_History_Sql extends Horde_History
             $result = $this->_db->insert('INSERT INTO horde_histories_modseq (history_modseqempty) VALUES(0)');
             // Don't completely empty the table to prevent sequence from being reset
             // when using certain RDBMS, like postgres (see Bug #13876).
-            $this->_db->delete('DELETE FROM horde_histories_modseq WHERE history_modseq < (? - 25)', array($result));
+            $this->_db->delete('DELETE FROM horde_histories_modseq WHERE history_modseq < (? - 25)', [$result]);
         } catch (Horde_Db_Exception $e) {
             throw new Horde_History_Exception($e);
         }
@@ -392,7 +401,7 @@ class Horde_History_Sql extends Horde_History
         $query .= 'DESC LIMIT 1';
 
         try {
-            $row = $this->_db->selectOne($query, array($guid));
+            $row = $this->_db->selectOne($query, [$guid]);
             if (empty($row['history_id'])) {
                 return false;
             }
@@ -400,7 +409,7 @@ class Horde_History_Sql extends Horde_History
             throw new Horde_History_Exception($e);
         }
 
-        $log = new Horde_History_Log($guid, array($row));
+        $log = new Horde_History_Log($guid, [$row]);
         return $log[0];
     }
 

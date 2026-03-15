@@ -1,10 +1,12 @@
 <?php
+
 namespace Horde\History;
-use \Horde_Test_Case;
+
+use Horde_Test_Case;
 use InvalidArgumentException;
 
 /**
- * Copyright 2010-2017 Horde LLC (http://www.horde.org/)
+ * Copyright 2010-2026 Horde LLC (http://www.horde.org/)
  *
  * @author     Michael J Rubinsky <mrubinsk@horde.org>
  * @category   Horde
@@ -18,7 +20,7 @@ class TestBase extends Horde_Test_Case
 
     public function testMethodLogHasPostConditionThatTimestampAndActorAreAlwaysRecorded()
     {
-        self::$history->log('test_uid', array('who' => 'me', 'action' => 'test_action'));
+        self::$history->log('test_uid', ['who' => 'me', 'action' => 'test_action']);
         $this->assertTrue(self::$history->getActionTimestamp('test_uid', 'test_action') > 0);
         $data = self::$history->getHistory('test_uid');
         $this->assertTrue(isset($data[0]['who']));
@@ -26,43 +28,43 @@ class TestBase extends Horde_Test_Case
 
     public function testMethodLogHasPostConditionThatTheGivenEventHasBeenRecorded()
     {
-        self::$history->log('test_uid', array('who' => 'me', 'ts' => 1000, 'action' => 'test_action'));
+        self::$history->log('test_uid', ['who' => 'me', 'ts' => 1000, 'action' => 'test_action']);
         $this->assertEquals(1000, self::$history->getActionTimestamp('test_uid', 'test_action'));
     }
 
     public function testMethodLogHasParameterStringGuid()
     {
         $this->expectException('InvalidArgumentException');
-        self::$history->log(array());
+        self::$history->log([]);
     }
 
     public function testMethodLogHasArrayParameterBooleanReplaceaction()
     {
-        self::$history->log('test_uid', array('who' => 'me', 'ts' => 1000, 'action' => 'test_action'));
-        self::$history->log('test_uid', array('who' => 'me', 'ts' => 1000, 'action' => 'test_action'), false);
-        self::$history->log('test_uid', array('who' => 'you', 'ts' => 2000, 'action' => 'yours_action'));
-        self::$history->log('test_uid', array('who' => 'you', 'ts' => 2000, 'action' => 'yours_action'), true);
+        self::$history->log('test_uid', ['who' => 'me', 'ts' => 1000, 'action' => 'test_action']);
+        self::$history->log('test_uid', ['who' => 'me', 'ts' => 1000, 'action' => 'test_action'], false);
+        self::$history->log('test_uid', ['who' => 'you', 'ts' => 2000, 'action' => 'yours_action']);
+        self::$history->log('test_uid', ['who' => 'you', 'ts' => 2000, 'action' => 'yours_action'], true);
 
-        $expect = array(
-            1 => array(
+        $expect = [
+            1 => [
                 'action' => 'test_action',
                 'desc'   => null,
                 'who'    => 'me',
                 'ts'     => 1000,
-            ),
-            2 => array(
+            ],
+            2 => [
                 'action' => 'test_action',
                 'desc'   => null,
                 'who'    => 'me',
                 'ts'     => 1000,
-            ),
-            4 => array(
+            ],
+            4 => [
                 'action' => 'yours_action',
                 'desc'   => '',
                 'who'    => 'you',
                 'ts'     => 2000,
-            ),
-        );
+            ],
+        ];
         $data = self::$history->getHistory('test_uid');
         foreach ($data as $log) {
             foreach ($expect[$log['modseq']] as $key => $value) {
@@ -74,28 +76,28 @@ class TestBase extends Horde_Test_Case
     public function testMethodGethistoryHasParameterStringGuid()
     {
         $this->expectException('InvalidArgumentException');
-        self::$history->getHistory(array());
+        self::$history->getHistory([]);
     }
 
     public function testMethodGethistoryHasResultHordehistorylogRepresentingTheHistoryLogMatchingTheGivenGuid()
     {
-        self::$history->log('test_uid', array('who' => 'me', 'ts' => 1000, 'action' => 'test_action'));
-        self::$history->log('test_uid', array('who' => 'you', 'ts' => 2000, 'action' => 'yours_action', 'extra' => array('a' => 'a')));
-        $expect = array(
-            1 => array(
+        self::$history->log('test_uid', ['who' => 'me', 'ts' => 1000, 'action' => 'test_action']);
+        self::$history->log('test_uid', ['who' => 'you', 'ts' => 2000, 'action' => 'yours_action', 'extra' => ['a' => 'a']]);
+        $expect = [
+            1 => [
                 'action' => 'test_action',
                 'desc'   => '',
                 'who'    => 'me',
                 'ts'     => 1000,
-            ),
-            2 => array(
+            ],
+            2 => [
                 'action' => 'yours_action',
                 'desc'   => '',
                 'who'    => 'you',
                 'ts'     => 2000,
-                'extra'  => array('a' => 'a'),
-            ),
-        );
+                'extra'  => ['a' => 'a'],
+            ],
+        ];
         $data = self::$history->getHistory('test_uid');
         foreach ($data as $log) {
             foreach ($expect[$log['modseq']] as $key => $value) {
@@ -107,7 +109,7 @@ class TestBase extends Horde_Test_Case
     public function testMethodGetbytimestampHasParameterStringCmp()
     {
         $this->expectException('InvalidArgumentException');
-        self::$history->getByTimestamp(array(), 1);
+        self::$history->getByTimestamp([], 1);
     }
 
     public function testMethodGetbytimestampHasParameterIntegerTs()
@@ -118,9 +120,9 @@ class TestBase extends Horde_Test_Case
 
     public function testMethodGetbytimestampHasParameterArrayFilters()
     {
-        self::$history->log('test_uid', array('who' => 'me', 'ts' => 1000, 'action' => 'test_action'));
-        self::$history->log('test_uid', array('who' => 'you', 'ts' => 2000, 'action' => 'yours_action', 'extra' => array('a' => 'a')));
-        $result = self::$history->getByTimestamp('>', 1, array(array('field' => 'who', 'op' => '=', 'value' => 'you')));
+        self::$history->log('test_uid', ['who' => 'me', 'ts' => 1000, 'action' => 'test_action']);
+        self::$history->log('test_uid', ['who' => 'you', 'ts' => 2000, 'action' => 'yours_action', 'extra' => ['a' => 'a']]);
+        $result = self::$history->getByTimestamp('>', 1, [['field' => 'who', 'op' => '=', 'value' => 'you']]);
         // History ID is not required to be numeric.
         // $this->assertEquals(array('test_uid' => 2), $result);
         $this->assertArrayHasKey('test_uid', $result);
@@ -128,10 +130,10 @@ class TestBase extends Horde_Test_Case
 
     public function testMethodGetbytimestampHasParameterStringParent()
     {
-        self::$history->log('test_uid:a_uid', array('who' => 'me', 'ts' => 1000, 'action' => 'test_action'));
-        self::$history->log('test_uid:b_uid', array('who' => 'you', 'ts' => 2000, 'action' => 'yours_action'));
-        self::$history->log('yours_uid', array('who' => 'you', 'ts' => 3000, 'action' => 'yours_action'));
-        $result = self::$history->getByTimestamp('>', 1, array(), 'test_uid');
+        self::$history->log('test_uid:a_uid', ['who' => 'me', 'ts' => 1000, 'action' => 'test_action']);
+        self::$history->log('test_uid:b_uid', ['who' => 'you', 'ts' => 2000, 'action' => 'yours_action']);
+        self::$history->log('yours_uid', ['who' => 'you', 'ts' => 3000, 'action' => 'yours_action']);
+        $result = self::$history->getByTimestamp('>', 1, [], 'test_uid');
 
         // History ID is not required to be numeric.
         //$this->assertEquals(array('test_uid:a_uid' => 1, 'test_uid:b_uid' => 2), $result);
@@ -141,9 +143,9 @@ class TestBase extends Horde_Test_Case
 
     public function testMethodGetbytimestampHasResultArrayContainingTheMatchingEventIds()
     {
-        self::$history->log('test_uid', array('who' => 'me', 'ts' => 1000, 'action' => 'test_action'));
-        self::$history->log('test_uid', array('who' => 'me', 'ts' => 1000, 'action' => 'test_action'));
-        self::$history->log('test_uid', array('who' => 'you', 'ts' => 2000, 'action' => 'yours_action', 'extra' => array('a' => 'a')));
+        self::$history->log('test_uid', ['who' => 'me', 'ts' => 1000, 'action' => 'test_action']);
+        self::$history->log('test_uid', ['who' => 'me', 'ts' => 1000, 'action' => 'test_action']);
+        self::$history->log('test_uid', ['who' => 'you', 'ts' => 2000, 'action' => 'yours_action', 'extra' => ['a' => 'a']]);
 
         $result = self::$history->getByTimestamp('<=', 1000);
         // History ID is not required to be numeric.
@@ -171,19 +173,19 @@ class TestBase extends Horde_Test_Case
         $this->assertArrayHasKey('test_uid', $result);
 
         $result = self::$history->getByTimestamp('>', 2000);
-        $this->assertEquals(array(), $result);
+        $this->assertEquals([], $result);
     }
 
     public function testMethodGetactiontimestampHasParameterStringGuid()
     {
         $this->expectException('InvalidArgumentException');
-        self::$history->getActionTimestamp(array(), 'test');
+        self::$history->getActionTimestamp([], 'test');
     }
 
     public function testMethodGetactiontimestampHasParameterStringAction()
     {
         $this->expectException('InvalidArgumentException');
-        self::$history->getActionTimestamp('test', array());
+        self::$history->getActionTimestamp('test', []);
     }
 
     public function testMethodGetactiontimestampHasResultIntegerZeroIfGethistoryReturnsAnError()
@@ -198,34 +200,34 @@ class TestBase extends Horde_Test_Case
 
     public function testMethodGetactiontimestampHasResultIntegerTimestampOfTheMatchingRecord()
     {
-        self::$history->log('test_uid', array('who' => 'me', 'ts' => 1, 'action' => 'test_action'));
-        self::$history->log('test_uid', array('who' => 'me', 'ts' => 2, 'action' => 'test_action'));
+        self::$history->log('test_uid', ['who' => 'me', 'ts' => 1, 'action' => 'test_action']);
+        self::$history->log('test_uid', ['who' => 'me', 'ts' => 2, 'action' => 'test_action']);
         $this->assertEquals(2, self::$history->getActionTimestamp('test_uid', 'test_action'));
-        self::$history->log('test_uid', array('who' => 'me', 'ts' => 3, 'action' => 'test_action'));
+        self::$history->log('test_uid', ['who' => 'me', 'ts' => 3, 'action' => 'test_action']);
         $this->assertEquals(3, self::$history->getActionTimestamp('test_uid', 'test_action'));
     }
 
     public function testMethodRemovebynamesHasPostconditionThatAllNamedRevordsHaveBeenRemoved()
     {
-        self::$history->log('test_uid', array('who' => 'me', 'ts' => 1000, 'action' => 'test_action'));
-        self::$history->log('test_uid', array('who' => 'me', 'ts' => 1000, 'action' => 'test_action'), false);
-        self::$history->log('yours_uid', array('who' => 'you', 'ts' => 2000, 'action' => 'yours_action'));
-        self::$history->log('yours_uid', array('who' => 'you', 'ts' => 2000, 'action' => 'yours_action'), true);
-        self::$history->removeByNames(array('test_uid'));
+        self::$history->log('test_uid', ['who' => 'me', 'ts' => 1000, 'action' => 'test_action']);
+        self::$history->log('test_uid', ['who' => 'me', 'ts' => 1000, 'action' => 'test_action'], false);
+        self::$history->log('yours_uid', ['who' => 'you', 'ts' => 2000, 'action' => 'yours_action']);
+        self::$history->log('yours_uid', ['who' => 'you', 'ts' => 2000, 'action' => 'yours_action'], true);
+        self::$history->removeByNames(['test_uid']);
         $data = self::$history->getHistory('test_uid');
         $this->assertEquals(0, count($data));
         $data = self::$history->getHistory('yours_uid');
-        $expect = array(
+        $expect = [
             'action' => 'yours_action',
             'desc'   => null,
             'who'    => 'you',
             'ts'     => 2000,
-            'modseq' => 4
-        );
+            'modseq' => 4,
+        ];
         // Remove ID, since it can not be determined beforehand.
-        $this->assertEquals($expect, array_diff_key($data[0], array('id' => 1)));
+        $this->assertEquals($expect, array_diff_key($data[0], ['id' => 1]));
 
-        self::$history->removeByNames(array('yours_uid'));
+        self::$history->removeByNames(['yours_uid']);
         $data = self::$history->getHistory('yours_uid');
         $this->assertEquals(0, count($data));
 
@@ -233,11 +235,11 @@ class TestBase extends Horde_Test_Case
 
     public function testMethodRemovebynamesHasParameterArrayNames()
     {
-        self::$history->log('test_uid', array('who' => 'me', 'ts' => 1000, 'action' => 'test_action'));
-        self::$history->log('test_uid', array('who' => 'me', 'ts' => 1000, 'action' => 'test_action'), false);
-        self::$history->log('yours_uid', array('who' => 'you', 'ts' => 2000, 'action' => 'yours_action'));
-        self::$history->log('yours_uid', array('who' => 'you', 'ts' => 2000, 'action' => 'yours_action'), true);
-        self::$history->removeByNames(array('test_uid', 'yours_uid'));
+        self::$history->log('test_uid', ['who' => 'me', 'ts' => 1000, 'action' => 'test_action']);
+        self::$history->log('test_uid', ['who' => 'me', 'ts' => 1000, 'action' => 'test_action'], false);
+        self::$history->log('yours_uid', ['who' => 'you', 'ts' => 2000, 'action' => 'yours_action']);
+        self::$history->log('yours_uid', ['who' => 'you', 'ts' => 2000, 'action' => 'yours_action'], true);
+        self::$history->removeByNames(['test_uid', 'yours_uid']);
         $data = self::$history->getHistory('test_uid');
         $this->assertEquals(0, count($data));
         $data = self::$history->getHistory('yours_uid');
@@ -246,11 +248,11 @@ class TestBase extends Horde_Test_Case
 
     public function testMethodRemovebynamesSucceedsIfParameterNamesIsEmpty()
     {
-        self::$history->log('test_uid', array('who' => 'me', 'ts' => 1000, 'action' => 'test_action'));
-        self::$history->log('test_uid', array('who' => 'me', 'ts' => 1000, 'action' => 'test_action'), false);
-        self::$history->log('test_uid', array('who' => 'you', 'ts' => 2000, 'action' => 'yours_action'));
-        self::$history->log('test_uid', array('who' => 'you', 'ts' => 2000, 'action' => 'yours_action'), true);
-        self::$history->removeByNames(array());
+        self::$history->log('test_uid', ['who' => 'me', 'ts' => 1000, 'action' => 'test_action']);
+        self::$history->log('test_uid', ['who' => 'me', 'ts' => 1000, 'action' => 'test_action'], false);
+        self::$history->log('test_uid', ['who' => 'you', 'ts' => 2000, 'action' => 'yours_action']);
+        self::$history->log('test_uid', ['who' => 'you', 'ts' => 2000, 'action' => 'yours_action'], true);
+        self::$history->removeByNames([]);
 
         $this->markTestIncomplete();
     }
@@ -262,28 +264,28 @@ class TestBase extends Horde_Test_Case
 
     public function testModSeqMethodsHavePostConditionThatMaxModSeqIncrements()
     {
-        self::$history->log('test_uid', array('who' => 'me', 'action' => 'test_action'));
+        self::$history->log('test_uid', ['who' => 'me', 'action' => 'test_action']);
         $this->assertEquals(self::$history->getHighestModSeq(), 1);
-        self::$history->log('test_uid', array('who' => 'me', 'action' => 'test_other_action'));
+        self::$history->log('test_uid', ['who' => 'me', 'action' => 'test_other_action']);
         $this->assertEquals(self::$history->getHighestModSeq(), 2);
     }
 
     public function testMethodLogHasPostConditionThatModSeqIsRecorded()
     {
-        self::$history->log('test_uid', array('who' => 'me', 'action' => 'test_action'));
+        self::$history->log('test_uid', ['who' => 'me', 'action' => 'test_action']);
         $data = self::$history->getHistory('test_uid');
         $this->assertEquals($data[0]['modseq'], 1);
-        self::$history->log('test_uid', array('who' => 'you', 'action' => 'your_action'));
-        $expect = array(
-            1 => array(
+        self::$history->log('test_uid', ['who' => 'you', 'action' => 'your_action']);
+        $expect = [
+            1 => [
                 'who' => 'me',
-                'action' => 'test_action'
-            ),
-            2 => array(
+                'action' => 'test_action',
+            ],
+            2 => [
                 'who' => 'you',
-                'action' => 'your_action'
-            )
-        );
+                'action' => 'your_action',
+            ],
+        ];
         $data = self::$history->getHistory('test_uid');
         foreach ($data as $log) {
             foreach ($expect[$log['modseq']] as $key => $value) {
@@ -294,10 +296,10 @@ class TestBase extends Horde_Test_Case
 
     public function testMethodLogHasPostConditionThatModSeqIsRecordedWhenLogIsOverwritten()
     {
-        self::$history->log('test_uid', array('who' => 'me', 'action' => 'test_action'));
+        self::$history->log('test_uid', ['who' => 'me', 'action' => 'test_action']);
         $data = self::$history->getHistory('test_uid');
         $this->assertEquals($data[0]['modseq'], 1);
-        self::$history->log('test_uid', array('who' => 'me', 'action' => 'test_action'), true);
+        self::$history->log('test_uid', ['who' => 'me', 'action' => 'test_action'], true);
         $data = self::$history->getHistory('test_uid');
         $this->assertEquals($data[0]['modseq'], 2);
         $this->assertTrue(empty($data[1]));
@@ -305,26 +307,26 @@ class TestBase extends Horde_Test_Case
 
     public function testMethodGetActionModSeqHasResultMatchingRequestedEntry()
     {
-        self::$history->log('test_uid', array('who' => 'me', 'ts' => 1, 'action' => 'test_action'));
-        self::$history->log('test_uid', array('who' => 'me', 'ts' => 2, 'action' => 'test_action'));
-        self::$history->log('test_uid', array('who' => 'me', 'ts' => 3, 'action' => 'test_otheraction'));
+        self::$history->log('test_uid', ['who' => 'me', 'ts' => 1, 'action' => 'test_action']);
+        self::$history->log('test_uid', ['who' => 'me', 'ts' => 2, 'action' => 'test_action']);
+        self::$history->log('test_uid', ['who' => 'me', 'ts' => 3, 'action' => 'test_otheraction']);
         $this->assertEquals(self::$history->getActionModSeq('test_uid', 'test_action'), 2);
-        self::$history->log('test_otheruid', array('who' => 'me', 'ts' => 3, 'action' => 'test_action'));
+        self::$history->log('test_otheruid', ['who' => 'me', 'ts' => 3, 'action' => 'test_action']);
         $this->assertEquals(self::$history->getActionModSeq('test_uid', 'test_action'), 2);
-        self::$history->log('test_uid', array('who' => 'you', 'ts' => 5, 'action' => 'test_action'), true);
+        self::$history->log('test_uid', ['who' => 'you', 'ts' => 5, 'action' => 'test_action'], true);
         $this->assertEquals(self::$history->getActionModSeq('test_uid', 'test_action'), 5);
     }
 
     public function testMethodGetbymodseqHasResultArrayContainingTheMatchingEventIds()
     {
-        self::$history->log('appone:test_uid', array('who' => 'me', 'ts' => 1000, 'action' => 'test_action')); // 1
-        self::$history->log('appone:test_uid', array('who' => 'me', 'ts' => 1001, 'action' => 'test_action')); // 2
-        self::$history->log('apptwo:test_uid', array('who' => 'you', 'ts' => 1002, 'action' => 'test_special_action')); // 3
-        self::$history->log('apptwo:test_uid', array('who' => 'me', 'ts' => 1003, 'action' => 'test_action')); // 4
-        self::$history->log('appone:test_uid', array('who' => 'me', 'ts' => 1004, 'action' => 'test_action')); // 5
-        self::$history->log('appone:test_uid', array('who' => 'you', 'ts' => 2000, 'action' => 'yours_action', 'extra' => array('a' => 'a'))); // 6
-        self::$history->log('appone:test_uid', array('who' => 'you', 'ts' => 2000, 'action' => 'yours_action', 'extra' => array('a' => 'a'))); // 7
-        self::$history->log('appone:test_uid', array('who' => 'you', 'ts' => 2000, 'action' => 'yours_action', 'extra' => array('a' => 'a'))); // 8
+        self::$history->log('appone:test_uid', ['who' => 'me', 'ts' => 1000, 'action' => 'test_action']); // 1
+        self::$history->log('appone:test_uid', ['who' => 'me', 'ts' => 1001, 'action' => 'test_action']); // 2
+        self::$history->log('apptwo:test_uid', ['who' => 'you', 'ts' => 1002, 'action' => 'test_special_action']); // 3
+        self::$history->log('apptwo:test_uid', ['who' => 'me', 'ts' => 1003, 'action' => 'test_action']); // 4
+        self::$history->log('appone:test_uid', ['who' => 'me', 'ts' => 1004, 'action' => 'test_action']); // 5
+        self::$history->log('appone:test_uid', ['who' => 'you', 'ts' => 2000, 'action' => 'yours_action', 'extra' => ['a' => 'a']]); // 6
+        self::$history->log('appone:test_uid', ['who' => 'you', 'ts' => 2000, 'action' => 'yours_action', 'extra' => ['a' => 'a']]); // 7
+        self::$history->log('appone:test_uid', ['who' => 'you', 'ts' => 2000, 'action' => 'yours_action', 'extra' => ['a' => 'a']]); // 8
 
         // Only have two unique UIDS.
         $result = self::$history->getByModSeq(0, 5);
@@ -337,13 +339,13 @@ class TestBase extends Horde_Test_Case
         $this->assertArrayHasKey('appone:test_uid', $result);
 
         // Test using action filter.
-        $filter = array(array('op' => '=', 'field' => 'action', 'value' => 'test_special_action'));
+        $filter = [['op' => '=', 'field' => 'action', 'value' => 'test_special_action']];
         $result = self::$history->getByModSeq(0, 5, $filter);
         $this->assertCount(1, $result);
         $this->assertArrayHasKey('apptwo:test_uid', $result);
 
         // Test using parent
-        $result = self::$history->getByModSeq(0, 5, array(), 'apptwo');
+        $result = self::$history->getByModSeq(0, 5, [], 'apptwo');
         $this->assertCount(1, $result);
         $this->assertArrayHasKey('apptwo:test_uid', $result);
 
@@ -355,16 +357,16 @@ class TestBase extends Horde_Test_Case
 
     public function testConditionThatHigestModSeqPersistsAfterLogDeletion()
     {
-        self::$history->log('appone:test_uid', array('who' => 'me', 'ts' => 1000, 'action' => 'test_action'));
-        self::$history->log('appone:test_uid', array('who' => 'me', 'ts' => 1001, 'action' => 'test_action'));
+        self::$history->log('appone:test_uid', ['who' => 'me', 'ts' => 1000, 'action' => 'test_action']);
+        self::$history->log('appone:test_uid', ['who' => 'me', 'ts' => 1001, 'action' => 'test_action']);
         $this->assertEquals(2, self::$history->getHighestModSeq());
 
         // Removes all entries
-        self::$history->removeByNames(array('appone:test_uid'));
+        self::$history->removeByNames(['appone:test_uid']);
         $this->assertEquals(2, self::$history->getHighestModSeq());
 
-        self::$history->log('appone:test_uid', array('who' => 'me', 'ts' => 1001, 'action' => 'test_action'));
-        self::$history->log('appone:test_uid2', array('who' => 'me', 'ts' => 1002, 'action' => 'test_action'));
+        self::$history->log('appone:test_uid', ['who' => 'me', 'ts' => 1001, 'action' => 'test_action']);
+        self::$history->log('appone:test_uid2', ['who' => 'me', 'ts' => 1002, 'action' => 'test_action']);
         $this->assertEquals(4, self::$history->getHighestModSeq());
 
         // Remove the highest modseq entry
@@ -376,9 +378,9 @@ class TestBase extends Horde_Test_Case
 
     public function testMethodGetHighestModSeqWithParentFilterReturnsFilteredResults()
     {
-        self::$history->log('appone:test_uid', array('who' => 'me', 'ts' => 1000, 'action' => 'test_action'));
-        self::$history->log('appone:test_uid', array('who' => 'me', 'ts' => 1001, 'action' => 'test_action'));
-        self::$history->log('apptwo:test_uid', array('who' => 'me', 'ts' => 1000, 'action' => 'test_action'));
+        self::$history->log('appone:test_uid', ['who' => 'me', 'ts' => 1000, 'action' => 'test_action']);
+        self::$history->log('appone:test_uid', ['who' => 'me', 'ts' => 1001, 'action' => 'test_action']);
+        self::$history->log('apptwo:test_uid', ['who' => 'me', 'ts' => 1000, 'action' => 'test_action']);
         $this->assertEquals(2, self::$history->getHighestModSeq('appone'));
         $this->assertEquals(3, self::$history->getHighestModSeq('apptwo'));
         $this->assertEquals(3, self::$history->getHighestModSeq());

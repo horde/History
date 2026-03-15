@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Copyright 2003-2017 Horde LLC (http://www.horde.org/)
+ * Copyright 2003-2026 Horde LLC (http://www.horde.org/)
  *
  * See the enclosed file LICENSE for license information (LGPL). If you
  * did not receive this file, see http://www.horde.org/licenses/lgpl21.
@@ -39,7 +40,7 @@ class Horde_History_Log implements IteratorAggregate, ArrayAccess, Countable
      *
      * TODO
      */
-    public function __construct($uid, $data = array())
+    public function __construct($uid, $data = [])
     {
         $this->uid = $uid;
 
@@ -48,14 +49,14 @@ class Horde_History_Log implements IteratorAggregate, ArrayAccess, Countable
         }
 
         foreach ($data as $row) {
-            $history = array(
+            $history = [
                 'action' => $row['history_action'],
                 'desc' => $row['history_desc'],
                 'who' => $row['history_who'],
                 'id' => $row['history_id'],
                 'ts' => $row['history_ts'],
-                'modseq' => $row['history_modseq']
-            );
+                'modseq' => $row['history_modseq'],
+            ];
 
             if (!empty($row['history_extra'])) {
                 $extra = @unserialize($row['history_extra']);
@@ -72,25 +73,25 @@ class Horde_History_Log implements IteratorAggregate, ArrayAccess, Countable
         return new ArrayIterator($this->_data);
     }
 
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return isset($this->_data[$offset]);
     }
 
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->_data[$offset];
     }
 
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         $this->_data[$offset] = $value;
     }
 
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         unset($this->_data[$offset]);

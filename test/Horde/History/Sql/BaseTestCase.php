@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author     Jan Schneider <jan@horde.org>
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
@@ -6,13 +7,15 @@
  * @package    History
  * @subpackage UnitTests
  */
+
 namespace Horde\History\Sql;
-use \Horde\History\TestBase as TestBase;
-use \Horde_Log_Logger;
-use \Horde_Log_Handler_Cli;
-use \Horde_History_Sql;
-use \PEAR_Config;
-use \Horde_Db_Migration_Migrator;
+
+use Horde\History\TestBase as TestBase;
+use Horde_Log_Logger;
+use Horde_Log_Handler_Cli;
+use Horde_History_Sql;
+use PEAR_Config;
+use Horde_Db_Migration_Migrator;
 
 abstract class BaseTestCase extends TestBase
 {
@@ -56,8 +59,9 @@ abstract class BaseTestCase extends TestBase
         self::$migrator = new Horde_Db_Migration_Migrator(
             self::$db,
             null,//self::$logger,
-            array('migrationsPath' => self::$dir,
-                  'schemaTableName' => 'horde_history_schema_info'));
+            ['migrationsPath' => self::$dir,
+                'schemaTableName' => 'horde_history_schema_info']
+        );
         self::$migrator->up();
     }
 
@@ -73,9 +77,9 @@ abstract class BaseTestCase extends TestBase
         self::$migrator->migrate(1);
         self::$db->insert(
             'INSERT INTO horde_histories (history_id, object_uid, history_ts, history_who, history_desc, history_action, history_extra) VALUES (?, ?, ?, ?, ?, ?, ?)',
-            array(1, 'test_uid', time(), 'me', '', 'test_action', null)
+            [1, 'test_uid', time(), 'me', '', 'test_action', null]
         );
         self::$migrator->up();
-        self::$history->log('test_uid2', array('who' => 'me', 'action' => 'test_action'));
+        self::$history->log('test_uid2', ['who' => 'me', 'action' => 'test_action']);
     }
 }

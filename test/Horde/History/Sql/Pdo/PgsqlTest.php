@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Copyright 2010-2017 Horde LLC (http://www.horde.org/)
+ * Copyright 2010-2026 Horde LLC (http://www.horde.org/)
  *
  * @author     Michael J Rubinsky <mrubinsk@horde.org>
  * @author     Jan Schneider <jan@horde.org>
@@ -9,17 +10,22 @@
  * @subpackage UnitTests
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
  */
-namespace Horde\History\Sql\Pdo;
-use \Horde\History\Sql\BaseTestCase as Base;
-use \Horde_Db_Adapter_Pdo_Pgsql;
-use \PDO;
 
+namespace Horde\History\Sql\Pdo;
+
+use Horde\History\Sql\BaseTestCase as Base;
+use Horde_Db_Adapter_Pdo_Pgsql;
+use PDO;
+
+/**
+ * @coversNothing
+ */
 class PgsqlTest extends Base
 {
     public static function setUpBeforeClass(): void
     {
-        if (!extension_loaded('pdo') ||
-            !in_array('pgsql', PDO::getAvailableDrivers())) {
+        if (!extension_loaded('pdo')
+            || !in_array('pgsql', PDO::getAvailableDrivers())) {
             self::$reason = 'No pgsql extension or no pgsql PDO driver';
             return;
         }

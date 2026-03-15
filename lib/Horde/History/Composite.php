@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Copyright 2014-2017 Horde LLC (http://www.horde.org/)
+ * Copyright 2014-2026 Horde LLC (http://www.horde.org/)
  *
  * See the enclosed file LICENSE for license information (LGPL). If you
  * did not receive this file, see http://www.horde.org/licenses/lgpl21.
@@ -38,7 +39,7 @@ class Horde_History_Composite extends Horde_History
      *   - drivers: (array) An array of Horde_History objects.
      * </pre>
      */
-    public function __construct($auth, array $params = array())
+    public function __construct($auth, array $params = [])
     {
         if (!isset($params['drivers'])) {
             throw new InvalidArgumentException('Missing drivers parameter.');
@@ -52,24 +53,27 @@ class Horde_History_Composite extends Horde_History
     /**
      */
     public function log(
-        $guid, array $attributes = array(), $replaceAction = false
-    )
-    {
+        $guid,
+        array $attributes = [],
+        $replaceAction = false
+    ) {
         /* Only save to 1st driver that is succesful. */
         foreach ($this->_drivers as $val) {
             try {
                 $val->log($guid, $attributes, $replaceAction);
                 return;
-            } catch (Horde_History_Exception $e) {}
+            } catch (Horde_History_Exception $e) {
+            }
         }
     }
 
     /**
      */
     protected function _log(
-        Horde_History_Log $history, array $attributes, $replaceAction = false
-    )
-    {
+        Horde_History_Log $history,
+        array $attributes,
+        $replaceAction = false
+    ) {
         /* Not used, but is abstract so needs to be defined. */
     }
 
@@ -82,17 +86,17 @@ class Horde_History_Composite extends Horde_History
          * getHistory(). */
         $cid = 'horde:history:' . $guid . '_composite';
 
-        if (!$this->_cache ||
-            !($history = @unserialize($this->_cache->get($cid, 0)))) {
-            $data = array();
-            $fields = array(
-                'action', 'desc', 'who', 'id', 'ts', 'modseq', 'extra'
-            );
+        if (!$this->_cache
+            || !($history = @unserialize($this->_cache->get($cid, 0)))) {
+            $data = [];
+            $fields = [
+                'action', 'desc', 'who', 'id', 'ts', 'modseq', 'extra',
+            ];
 
             foreach ($this->_drivers as $val) {
                 try {
                     foreach ($val->getHistory($guid) as $val2) {
-                        $extra = $tmp = array();
+                        $extra = $tmp = [];
                         foreach ($val2 as $key3 => $val3) {
                             if (in_array($key3, $fields)) {
                                 $tmp['history_' . $key3] = $val3;
@@ -107,7 +111,8 @@ class Horde_History_Composite extends Horde_History
                     }
 
                     $data[] = $tmp;
-                } catch (Horde_History_Exception $e) {}
+                } catch (Horde_History_Exception $e) {
+                }
             }
 
             $history = new Horde_History_Log($guid, $data);
@@ -130,10 +135,12 @@ class Horde_History_Composite extends Horde_History
     /**
      */
     public function _getByTimestamp(
-        $cmp, $ts, array $filters = array(), $parent = null
-    )
-    {
-        $ret = array();
+        $cmp,
+        $ts,
+        array $filters = [],
+        $parent = null
+    ) {
+        $ret = [];
 
         foreach ($this->_drivers as $val) {
             try {
@@ -141,7 +148,8 @@ class Horde_History_Composite extends Horde_History
                     $ret,
                     $val->getByTimestamp($cmp, $ts, $filters, $parent)
                 );
-            } catch (Horde_History_Exception $e) {}
+            } catch (Horde_History_Exception $e) {
+            }
         }
 
         return $ret;
@@ -154,7 +162,8 @@ class Horde_History_Composite extends Horde_History
         foreach ($this->_drivers as $val) {
             try {
                 $val->removeByNames($names);
-            } catch (Horde_History_Exception $e) {}
+            } catch (Horde_History_Exception $e) {
+            }
         }
     }
 
