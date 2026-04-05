@@ -5,9 +5,8 @@ class HordeHistoryUpgradeAutoIncrement extends Horde_Db_Migration_Base
     public function up()
     {
         $this->changeColumn('horde_histories', 'history_id', 'autoincrementKey');
-        try {
+        if (in_array('horde_histories_seq', $this->tables())) {
             $this->dropTable('horde_histories_seq');
-        } catch (Horde_Db_Exception $e) {
         }
     }
 
