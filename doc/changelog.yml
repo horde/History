@@ -116,6 +116,17 @@
     Happy New Year!
     Use HTTPS.
     Development mode for Horde_History-2.3.7
+3.0.0-RC1:
+  api: 3.0.0-RC1
+  state:
+    release: RC
+    api: RC
+  date: 2026-05-19
+  license:
+    identifier: LGPL-2.1-only
+    uri: https://spdx.org/licenses/LGPL-2.1-only.html
+  notes: |-
+    fix: More defensive code when trying to drop tables
 2.3.6:
   api: 2.3.0
   state:

@@ -11,7 +11,7 @@
             "role": "lead"
         }
     ],
-    "time": "2026-03-15",
+    "time": "2026-05-19",
     "repositories": [],
     "require": {
         "horde/horde-installer-plugin": "dev-FRAMEWORK_6_0 || ^3 || ^2",
@@ -36,7 +36,9 @@
         }
     },
     "config": {
-        "allow-plugins": {}
+        "allow-plugins": {
+            "horde/horde-installer-plugin": true
+        }
     },
     "extra": {
         "branch-alias": {
